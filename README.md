@@ -21,15 +21,11 @@ Built from scratch utilizing the **MERN Stack** (MongoDB, Express, React, Node.j
 
 ### 🚀 Live Application
 
-https://EduNexus-d6jk.onrender.com/
-
-### 🎥 Project Demonstration Video
-
-https://youtu.be/NNCnvQNx45E?si=8kEkJsPTBwAHe0ik
+https://edu-nexus-client.vercel.app/
 
 ### 💻 GitHub Repository
 
-https://github.com/DhavalXHub/EduNexus-erp
+https://github.com/andyraaj/EduNexus
 
 ### 🔑 Demo Student Credentials
 
