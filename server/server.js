@@ -79,31 +79,52 @@ app.use(auditLogger);
 
 const allowedOrigins = Array.from(new Set(parseOrigins(
     'http://localhost:5173',
+    'http://localhost:5174',
     process.env.CLIENT_ORIGIN,
     process.env.RENDER_EXTERNAL_URL,
     process.env.VERCEL_FRONTEND_URL,
     'https://EduNexus-d6jk.onrender.com'
 )));
 
+// Extract Vercel project base name for preview URL matching
+// e.g. "https://edu-nexus-client.vercel.app" → "edu-nexus-client"
+const vercelProjectName = (() => {
+    const url = process.env.VERCEL_FRONTEND_URL || process.env.CLIENT_ORIGIN || '';
+    const match = url.match(/https?:\/\/([^.]+)\.vercel\.app/);
+    return match ? match[1].replace(/-[a-z0-9]{8,}$/, '') : null; // strip hash suffix if present
+})();
+
 console.log('[CORS] Allowed origins:', allowedOrigins);
+console.log('[CORS] Vercel project name pattern:', vercelProjectName);
+
+const isAllowedOrigin = (origin) => {
+    const normalized = normalizeOrigin(origin);
+
+    // 1. Exact match
+    if (allowedOrigins.includes(normalized)) return true;
+
+    // 2. Allow any Vercel preview URL for this project
+    // Vercel preview URLs look like: https://edu-nexus-client-abc123xyz-team.vercel.app
+    if (normalized.endsWith('.vercel.app') && vercelProjectName) {
+        const hostname = normalized.replace(/^https?:\/\//, '');
+        if (hostname.startsWith(vercelProjectName)) return true;
+    }
+
+    return false;
+};
 
 app.use(
     cors({
         origin: function (origin, callback) {
-            // Allow requests with no origin
+            // Allow requests with no origin (curl, Postman, server-to-server)
             if (!origin) return callback(null, true);
 
-            const normalizedOrigin = normalizeOrigin(origin);
-
-            if (allowedOrigins.includes(normalizedOrigin)) {
+            if (isAllowedOrigin(origin)) {
                 return callback(null, true);
             }
 
-            console.error("Blocked by CORS:", origin);
-
-            return callback(
-                new Error(`Origin not allowed by CORS: ${origin}`)
-            );
+            console.error('[CORS] Blocked:', origin);
+            return callback(new Error(`Origin not allowed by CORS: ${origin}`));
         },
         credentials: true,
     })
