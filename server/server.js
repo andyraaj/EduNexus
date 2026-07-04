@@ -81,6 +81,7 @@ const allowedOrigins = Array.from(new Set(parseOrigins(
     'http://localhost:5173',
     process.env.CLIENT_ORIGIN,
     process.env.RENDER_EXTERNAL_URL,
+    process.env.VERCEL_FRONTEND_URL,
     'https://EduNexus-d6jk.onrender.com'
 )));
 
