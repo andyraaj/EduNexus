@@ -183,8 +183,10 @@ app.use('/api/audit-logs', require('./routes/auditRoutes'));
 // ── API 404 handler ────────────────────────────────────────────────────────
 app.use('/api', notFound);
 
-// ── Serve frontend static files ───────────────────────────────────────────
-app.use(express.static(clientDistPath));
+// ── Serve frontend static files (only if client was built here) ──────────
+if (fs.existsSync(clientDistPath)) {
+    app.use(express.static(clientDistPath));
+}
 
 // ── React SPA fallback (must be after static + API routes) ────────────────
 app.get('*', (req, res) => {
@@ -194,7 +196,19 @@ app.get('*', (req, res) => {
             message: 'API route not found',
         });
     }
-    res.sendFile(path.join(clientDistPath, 'index.html'));
+    // If client/dist exists (monorepo deploy), serve the SPA
+    if (fs.existsSync(clientIndexPath)) {
+        return res.sendFile(clientIndexPath);
+    }
+    // Frontend is deployed separately (e.g. Vercel) — return API info
+    return res.status(200).json({
+        success: true,
+        data: {
+            service: 'EduNexus-api',
+            status: 'running',
+            note: 'Frontend is hosted separately. Access the API via /api/v1/*',
+        },
+    });
 });
 
 // ── Global Error Handler (must be LAST middleware) ────────────────────────
