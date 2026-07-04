@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard - EduNexus ERP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <span>🎓</span> <span class="brand-text">EduNexus</span>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar user-avatar-display">F</div>
+            <div class="user-info">
+                <span class="user-name user-name-display">Faculty Name</span>
+                <span class="user-role user-role-display">Faculty</span>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <li class="nav-group-title">Main</li>
+            <li class="nav-item">
+                <a href="faculty-dashboard.html" class="nav-link active">
+                    <span class="nav-icon">📊</span> <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+
+            <li class="nav-group-title">Management</li>
+            <li class="nav-item">
+                <a href="faculty-attendance.html" class="nav-link">
+                    <span class="nav-icon">✅</span> <span class="nav-text">Attendance</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="faculty-results.html" class="nav-link">
+                    <span class="nav-icon">📝</span> <span class="nav-text">Grading</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="faculty-quizzes.html" class="nav-link">
+                    <span class="nav-icon">✍️</span> <span class="nav-text">Quizzes</span>
+                </a>
+            </li>
+
+            <li class="nav-group-title">Schedule</li>
+            <li class="nav-item">
+                <a href="timetable.html" class="nav-link">
+                    <span class="nav-icon">📅</span> <span class="nav-text">My Schedule</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="top-header">
+            <button id="sidebarToggle" class="toggle-btn">☰</button>
+            <div class="page-title">Faculty Portal</div>
+            <div class="header-actions">
+                <button onclick="logout()" class="btn-primary" style="background-color: var(--danger);">Logout</button>
+            </div>
+        </header>
+
+        <!-- Container -->
+        <div class="container">
+            <div style="margin-bottom: 2rem;">
+                <h2 style="font-size: 1.5rem; color: var(--primary);">Hello, <span
+                        class="user-name-display">Professor</span>!</h2>
+                <p style="color: var(--text-muted);">Overview of your classes and pending tasks.</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Classes</div>
+                    <div class="stat-value">4</div>
+                </div>
+                <div class="stat-card" style="border-left-color: var(--warning);">
+                    <div class="stat-label">Pending Evaluations</div>
+                    <div class="stat-value" style="color: var(--warning);">12</div>
+                </div>
+                <div class="stat-card" style="border-left-color: var(--info);">
+                    <div class="stat-label">Department</div>
+                    <div class="stat-value" style="font-size: 1.25rem;">Computer Science</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Upcoming Classes</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Subject</th>
+                            <th>Batch</th>
+                            <th>Room</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>10:00 AM</td>
+                            <td>Database Management</td>
+                            <td>CS-A</td>
+                            <td>Lab 2</td>
+                            <td><span class="badge badge-info">Start Class</span></td>
+                        </tr>
+                        <tr>
+                            <td>12:30 PM</td>
+                            <td>Software Engineering</td>
+                            <td>CS-B</td>
+                            <td>Room 304</td>
+                            <td><span class="badge badge-warning">Upcoming</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+{
+  "models": [
+    {
+      "title": "Gemini Flash",
+      "provider": "google",
+      "model": "gemini-1.5-flash"
+    }
+  ],
+  "apiKeys": {
+    "google": "AIzaSyCF8hhP6SR-hudSbebsF6kDYoXKktuupfY"
+  }
+}
+

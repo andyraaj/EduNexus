@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz - EduNexus ERP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand"><span>🎓</span> <span class="brand-text">EduNexus</span></div>
+        <div class="user-profile">
+            <div class="user-avatar user-avatar-display">S</div>
+            <div class="user-info">
+                <span class="user-name user-name-display">Student Name</span>
+                <span class="user-role user-role-display">Student</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-group-title">Main</li>
+            <li class="nav-item"><a href="student-dashboard.html" class="nav-link"><span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span></a></li>
+            <li class="nav-group-title">Academics</li>
+            <li class="nav-item"><a href="attendance.html" class="nav-link"><span class="nav-icon">✅</span> <span
+                        class="nav-text">Attendance</span></a></li>
+            <li class="nav-item"><a href="timetable.html" class="nav-link"><span class="nav-icon">📅</span> <span
+                        class="nav-text">Timetable</span></a></li>
+            <li class="nav-item"><a href="results.html" class="nav-link"><span class="nav-icon">🏆</span> <span
+                        class="nav-text">Results</span></a></li>
+            <li class="nav-group-title">Finance</li>
+            <li class="nav-item"><a href="billing.html" class="nav-link"><span class="nav-icon">💳</span> <span
+                        class="nav-text">Billing</span></a></li>
+            <li class="nav-group-title">Learning</li>
+            <li class="nav-item"><a href="quiz.html" class="nav-link active"><span class="nav-icon">✍️</span> <span
+                        class="nav-text">Quizzes</span></a></li>
+            <li class="nav-item"><a href="announcements.html" class="nav-link"><span class="nav-icon">📢</span> <span
+                        class="nav-text">Announcements</span></a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <button id="sidebarToggle" class="toggle-btn">☰</button>
+            <div class="page-title">Online Assessments</div>
+            <div class="header-actions">
+                <button onclick="logout()" class="btn-primary" style="background-color: var(--danger);">Logout</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- Quiz List Container -->
+            <div id="quiz-list-container">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Active Quizzes</div>
+                        <div class="stat-value" id="active-quiz-count">--</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: var(--success);">
+                        <div class="stat-label">Completed</div>
+                        <div class="stat-value" style="color: var(--success);">12</div>
+                    </div>
+                </div>
+
+                <h3 style="margin: 1.5rem 0 1rem;">Available Quizzes</h3>
+
+                <div id="available-quizzes-list"
+                    style="display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+                    <!-- Dynamic Quizzes -->
+                    <p>Loading quizzes...</p>
+                </div>
+            </div>
+
+            <!-- Quiz Player Container (Hidden by default) -->
+            <div id="quiz-player-container" style="display: none;">
+                <div class="card">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
+                        <h3 id="quiz-title">Quiz Title</h3>
+                        <div
+                            style="background: #fee2e2; color: #991b1b; padding: 0.5rem 1rem; border-radius: var(--radius); font-weight: 600;">
+                            Time Left: <span id="timer">00:00</span>
+                        </div>
+                    </div>
+
+                    <div id="quiz-questions">
+                        <!-- Questions go here -->
+                    </div>
+
+                    <button class="btn-primary" onclick="submitQuiz()" style="margin-top: 1.5rem;">Submit Quiz</button>
+                    <button class="btn-primary" onclick="cancelQuiz()"
+                        style="margin-top: 1.5rem; background-color: #64748b; margin-left: 1rem;">Cancel</button>
+                </div>
+            </div>
+
+            <div class="tab-container">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="available">Available Quizzes</button>
+                    <button class="tab-btn" data-tab="attempted">Attempted History</button>
+                    <button class="tab-btn" data-tab="results">My Performance</button>
+                </div>
+
+                <!-- Tab 1: Available -->
+                <div id="available" class="tab-content active">
+                    <div id="available-quizzes-list"
+                        style="display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+                        <p style="color:var(--text-muted)">Loading quizzes...</p>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Attempted -->
+                <div id="attempted" class="tab-content">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Quiz Title</th>
+                                <th>Date Attempted</th>
+                                <th>Score</th>
+                                <th>Total Questions</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="quiz-attempts-body">
+                            <tr><td colspan="5" style="text-align:center;color:var(--text-muted)">Loading attempt history...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tab 3: Performance -->
+                <div id="results" class="tab-content">
+                    <div
+                        style="background: #f8fafc; height: 300px; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                        <p style="color: var(--text-muted);">[ Chart.js Visualization Placeholder ]<br>Quiz Performance
+                            Analysis Graph</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

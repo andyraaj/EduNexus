@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduNexus - Student Dashboard</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-grid">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="brand mb-4">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" />
+                    <path d="M2 17L12 22L22 17" />
+                    <path d="M2 12L12 17L22 12" />
+                </svg>
+                <span class="text-xl">EduNexus</span>
+            </div>
+
+            <div class="profile-mini mb-4"
+                style="padding: 1rem; background: #F3F4F6; border-radius: 0.5rem; margin-bottom: 2rem;">
+                <p class="font-bold" id="userName">Student</p>
+                <p class="text-sm text-muted">Computer Science</p>
+            </div>
+
+            <nav>
+                <a href="#" class="nav-link active" data-tab="dashboard">Dashboard</a>
+                <a href="#" class="nav-link" data-tab="attendance">Attendance</a>
+                <a href="#" class="nav-link" data-tab="timetable">Timetable</a>
+                <a href="#" class="nav-link" data-tab="resources">Resources</a>
+            </nav>
+
+            <div style="margin-top: auto; padding-top: 2rem;">
+                <button onclick="logout()" class="nav-link text-red"
+                    style="width: 100%; text-align: left; border: none; background: none; cursor: pointer;">
+                    Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="flex justify-between items-center mb-4" style="margin-bottom: 2rem;">
+                <h2 class="text-2xl" id="pageTitle">Student Dashboard</h2>
+                <div class="date text-muted" id="currentDate">Mon, 20 Jan 2026</div>
+            </header>
+
+            <!-- Dashboard View -->
+            <div id="dashboard" class="tab-content active">
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="card">
+                        <h3 class="text-sm text-muted mb-2">Overall Attendance</h3>
+                        <div class="flex items-center justify-between">
+                            <span class="text-2xl" style="color: var(--success);">85%</span>
+                            <span class="text-sm"
+                                style="background: #D1FAE5; color: #065F46; padding: 0.25rem 0.5rem; border-radius: 1rem;">Safe</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-lg mb-4">Attendance Trends</h3>
+                    <canvas id="attendanceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Attendance View -->
+            <div id="attendance" class="tab-content">
+                <div class="card">
+                    <h3 class="text-lg mb-4">Subject-wise Attendance</h3>
+                    <div id="attendanceTable">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Timetable View -->
+            <div id="timetable" class="tab-content">
+                <div class="card">
+                    <h3 class="text-lg mb-4">Class Schedule</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Mon</th>
+                                <th>Tue</th>
+                                <th>Wed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>09:00 AM</td>
+                                <td>Web Dev</td>
+                                <td>OS</td>
+                                <td>Networks</td>
+                            </tr>
+                            <tr>
+                                <td>10:00 AM</td>
+                                <td>Lab</td>
+                                <td>Web Dev</td>
+                                <td>Free</td>
+                            </tr>
+                            <tr>
+                                <td>11:00 AM</td>
+                                <td>Lab</td>
+                                <td>Maths</td>
+                                <td>OS</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Resources View -->
+            <div id="resources" class="tab-content">
+                <div class="card">
+                    <h3 class="text-lg mb-4">Learning Materials</h3>
+                    <ul>
+                        <li class="p-4 mb-2" style="background: #f9f9f9; border-radius: 0.5rem;"><a href="#"
+                                class="text-primary">Unit 1 Notes - Web Dev.pdf</a></li>
+                        <li class="p-4 mb-2" style="background: #f9f9f9; border-radius: 0.5rem;"><a href="#"
+                                class="text-primary">OS Lab Manual.docx</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = checkAuth();
+            if (user) document.getElementById('userName').textContent = user.name;
+
+            // Chart
+            const ctx = document.getElementById('attendanceChart').getContext('2d');
+            new Chart(ctx, { type: 'line', data: { labels: ['Aug', 'Sep', 'Oct'], datasets: [{ label: '%', data: [90, 88, 85], borderColor: '#2563EB' }] } });
+
+            // Tabs Logic
+            const tabs = document.querySelectorAll('.nav-link[data-tab]');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    e.target.classList.add('active');
+                    const targetId = e.target.getAttribute('data-tab');
+                    document.getElementById(targetId).classList.add('active');
+                    document.getElementById('pageTitle').textContent = e.target.textContent;
+
+                    if (targetId === 'attendance') loadAttendance();
+                });
+            });
+        });
+
+        async function loadAttendance() {
+            const token = localStorage.getItem('token');
+            const res = await fetch('http://localhost:5000/api/attendance/my', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+
+            let html = '<table><thead><tr><th>Subject</th><th>Total</th><th>Present</th><th>%</th></tr></thead><tbody>';
+            data.forEach(d => {
+                const color = d.percentage < 75 ? 'red' : 'green';
+                html += `<tr><td>${d.subject}</td><td>${d.total}</td><td>${d.present}</td><td style="color:${color}; font-weight:bold;">${d.percentage}%</td></tr>`;
+            });
+            html += '</tbody></table>';
+            document.getElementById('attendanceTable').innerHTML = html;
+        }
+    </script>
+</body>
+
+</html>

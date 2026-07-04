@@ -1,0 +1,43 @@
+{
+  "name": "EduNexus",
+  "version": "1.0.0",
+  "description": "College ERP Management System",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js",
+    "client": "npm --prefix client run dev",
+    "client:install": "npm --prefix client install --include=dev",
+    "client:build": "npm --prefix client run build",
+    "build": "npm ci && npm run client:install && npm run client:build",
+    "db:seed": "node server/seedERP.js",
+    "test": "node --test tests/*.test.js",
+    "ping": "node ping_test.js"
+  },
+  "keywords": [
+    "erp",
+    "college",
+    "management"
+  ],
+  "author": "EduNexus Team",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.10.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.6.3",
+    "multer": "^2.1.1",
+    "pdfkit": "^0.14.0",
+    "qrcode": "^1.5.4",
+    "redis": "^4.7.0",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

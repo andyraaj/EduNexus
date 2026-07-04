@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Build output
+client/dist/
+
+# Uploaded files (user-generated content)
+uploads/
+
+# Logs
+*.log
+server/fatal.log
+server/server.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Temp files
+*.tmp
+*.swp
+
+# Development/debug scripts (should not deploy)
+test.js
+test_*.js
+check_syntax.js
+fix-syntax.js
+ping_test.js
+ping_ready.txt
+theme-refactor.js
+clean_db.js
+server/test_db.js
+server/temp_run.js
+server/spawn_server.js
+server/verify_login.js
+server_output_new.log
+server_error.log

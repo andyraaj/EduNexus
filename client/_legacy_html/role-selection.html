@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Your Role - EduNexus ERP</title>
+    <!-- Google Fonts: Inter & Poppins -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #64748b;
+            --accent-color: #0ea5e9;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --surface-color: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 4rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo svg {
+            width: 48px;
+            height: 48px;
+            color: white;
+        }
+
+        .logo h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+        }
+
+        .main-heading {
+            margin-top: 2rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .main-description {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        /* Role Cards Grid */
+        .role-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+        }
+
+        .role-card {
+            background: var(--surface-color);
+            border-radius: 1.5rem;
+            padding: 3rem 2rem;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .role-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .role-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .role-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .role-card:active {
+            transform: translateY(-5px);
+        }
+
+        .role-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            animation: bounce 2s infinite;
+        }
+
+        .role-card:hover .role-icon {
+            animation: none;
+            transform: scale(1.1);
+            transition: transform 0.3s ease;
+        }
+
+        .role-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.75rem;
+        }
+
+        .role-description {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .role-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            background: #eff6ff;
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .select-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+        }
+
+        .select-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(37, 99, 235, 0.4);
+        }
+
+        .select-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            animation: fadeIn 1s ease 0.4s backwards;
+        }
+
+        .footer-links {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .role-cards-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .main-heading {
+                font-size: 1.5rem;
+            }
+
+            .logo h1 {
+                font-size: 2rem;
+            }
+
+            .role-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .role-icon {
+                font-size: 4rem;
+            }
+
+            .role-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                    <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                </svg>
+                <h1>EduNexus ERP</h1>
+            </div>
+            <p class="subtitle">Adani University - Smart Campus Management</p>
+
+            <h2 class="main-heading">Welcome! Please Select Your Role</h2>
+            <p class="main-description">Choose your role to continue to your personalized dashboard</p>
+        </div>
+
+        <!-- Role Cards -->
+        <div class="role-cards-container">
+            <!-- Student Card -->
+            <div class="role-card">
+                <span class="role-icon">🎓</span>
+                <h3 class="role-title">Student</h3>
+                <p class="role-description">Access your academic portal, view grades, attendance, and course materials.
+                </p>
+
+                <ul class="role-features">
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        View Attendance & Results
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        Access Timetable & Exams
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        Download Course Materials
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        Manage Fee Payments
+                    </li>
+                </ul>
+
+                <button class="select-btn" onclick="selectRole('student')">Login as Student</button>
+            </div>
+
+            <!-- Faculty Card -->
+            <div class="role-card">
+                <span class="role-icon">👨‍🏫</span>
+                <h3 class="role-title">Faculty</h3>
+                <p class="role-description">Manage your classes, record attendance, assign grades, and create
+                    assessments.</p>
+
+                <ul class="role-features">
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        Mark Student Attendance
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        Enter Grades & Results
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        Create Quizzes & Assignments
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        View Class Performance
+                    </li>
+                </ul>
+
+                <button class="select-btn" onclick="selectRole('faculty')">Login as Faculty</button>
+            </div>
+
+            <!-- Admin Card -->
+            <div class="role-card">
+                <span class="role-icon">🛡️</span>
+                <h3 class="role-title">Admin</h3>
+                <p class="role-description">Full system control, manage users, monitor analytics, and configure
+                    settings.</p>
+
+                <ul class="role-features">
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        Manage Users & Roles
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        View System Analytics
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        Configure System Settings
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span>
+                        Generate Reports
+                    </li>
+                </ul>
+
+                <button class="select-btn" onclick="selectRole('admin')">Login as Admin</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>&copy; 2026 EduNexus ERP | Adani University | All Rights Reserved</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Help Desk</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectRole(role) {
+            // Store the selected role in sessionStorage
+            sessionStorage.setItem('selectedRole', role);
+
+            // Redirect to login page
+            window.location.href = `login.html?role=${role}`;
+        }
+    </script>
+</body>
+
+</html>

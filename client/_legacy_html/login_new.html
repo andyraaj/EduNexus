@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduNexus ERP - Login | Adani University</title>
+    <!-- Google Fonts: Inter & Poppins -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* 
+         * EduNexus ERP - Professional Login System
+         * Enterprise Grade Design System
+         */
+
+        :root {
+            --primary-color: #2563eb;
+            /* Enterprise Blue */
+            --primary-dark: #1e40af;
+            --secondary-color: #64748b;
+            --accent-color: #0ea5e9;
+            /* Sky Blue */
+            --bg-color: #f8fafc;
+            --surface-color: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --error-color: #ef4444;
+            --success-color: #10b981;
+
+            /* Gradients */
+            --brand-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --overlay-gradient: linear-gradient(135deg, rgba(30, 58, 138, 0.95) 0%, rgba(59, 130, 246, 0.85) 100%);
+
+            /* Shadows */
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --input-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --btn-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+
+            /* Spacing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 0.75rem;
+            --spacing-md: 1.25rem;
+            --spacing-lg: 2rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* --- Split Layout --- */
+        .container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- Left Panel (Branding) --- */
+        .brand-panel {
+            flex: 1;
+            background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 4rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .brand-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--overlay-gradient);
+            z-index: 1;
+        }
+
+        .brand-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .uni-logo {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .system-title h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+            max-width: 80%;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 12px;
+        }
+
+        /* --- Right Panel (Login) --- */
+        .login-panel {
+            flex: 0 0 550px;
+            background: var(--surface-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 4rem;
+            position: relative;
+            box-shadow: -10px 0 25px rgba(0, 0, 0, 0.03);
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .login-header {
+            text-align: left;
+            margin-bottom: 2.5rem;
+        }
+
+        .login-header h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .login-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 2.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            background-color: var(--bg-color);
+            transition: all 0.2s ease;
+            box-shadow: var(--input-shadow);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background-color: var(--surface-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Role Selector */
+        .role-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .role-label-text {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .role-card {
+            flex: 1;
+            background: var(--surface-color);
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1rem 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            user-select: none;
+        }
+
+        .role-card:hover {
+            border-color: var(--accent-color);
+            background: #f0f9ff;
+        }
+
+        .role-card.active {
+            border-color: var(--primary-color);
+            background: #eff6ff;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
+        }
+
+        .role-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .role-card.active .role-name {
+            color: var(--primary-color);
+        }
+
+        /* Actions */
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .forgot-password:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--btn-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 10px -1px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        .login-footer {
+            position: absolute;
+            bottom: 2rem;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .footer-links {
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: var(--text-main);
+        }
+
+        /* --- Mobile Responsiveness --- */
+        @media (max-width: 968px) {
+            .login-panel {
+                flex: 0 0 500px;
+                padding: 0 3rem;
+            }
+
+            .system-title h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .brand-panel {
+                flex: 0 0 160px;
+                /* Reduced height on mobile */
+                padding: 2rem;
+                justify-content: center;
+            }
+
+            .brand-content {
+                text-align: center;
+            }
+
+            .brand-content .tagline,
+            .brand-content .features-list,
+            .brand-content .uni-logo {
+                display: none;
+                /* Hide extra details on mobile */
+            }
+
+            .system-title h1 {
+                font-size: 2rem;
+                margin-bottom: 0;
+            }
+
+            .login-panel {
+                flex: 1;
+                padding: 2rem;
+                border-top-left-radius: 2rem;
+                border-top-right-radius: 2rem;
+                margin-top: -2rem;
+                /* Overlap effect */
+                z-index: 10;
+            }
+
+            .login-header {
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- LEFT PANEL: Branding -->
+        <div class="brand-panel">
+            <div class="brand-overlay"></div>
+
+            <div class="brand-content top">
+                <div class="uni-logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                    </svg>
+                    Adani University
+                </div>
+            </div>
+
+            <div class="brand-content center">
+                <div class="system-title">
+                    <h1>EduNexus ERP</h1>
+                </div>
+                <p class="tagline">The Next-Gen Smart Campus Management Portal for Modern Education.</p>
+
+                <ul class="features-list">
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span> Real-time Attendance & Performance Tracking
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span> Seamless Exam Management & Results
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span> Digital Learning Resources Hub
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">✓</span> Instant Notifications & Alerts
+                    </li>
+                </ul>
+            </div>
+
+            <div class="brand-content bottom">
+                <!-- Can include partner logos or copyright here for desktop -->
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: Login Form -->
+        <div class="login-panel">
+            <div class="login-card">
+                <div class="login-header">
+                    <h2>Sign In</h2>
+                    <p>Access your dashboard using your university credentials.</p>
+                </div>
+
+                <form action="#" method="POST">
+
+                    <!-- Role Selector -->
+                    <label class="role-label-text">Login As</label>
+                    <div class="role-selector" id="roleSelector">
+                        <div class="role-card active" data-role="student" onclick="selectRole(this)">
+                            <span class="role-icon">🎓</span>
+                            <span class="role-name">Student</span>
+                        </div>
+                        <div class="role-card" data-role="faculty" onclick="selectRole(this)">
+                            <span class="role-icon">👨‍🏫</span>
+                            <span class="role-name">Faculty</span>
+                        </div>
+                        <div class="role-card" data-role="admin" onclick="selectRole(this)">
+                            <span class="role-icon">🛡️</span>
+                            <span class="role-name">Admin</span>
+                        </div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                    </path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </span>
+                            <input type="email" id="email" class="form-input" placeholder="id@adani.edu.in" required>
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </span>
+                            <input type="password" id="password" class="form-input" placeholder="••••••••••••" required>
+                        </div>
+                    </div>
+
+                    <!-- Remember & Forgot -->
+                    <div class="form-actions">
+                        <label class="remember-me">
+                            <input type="checkbox" style="accent-color: var(--primary-color);">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-password">Forgot Password?</a>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-primary">
+                        Sign In to Dashboard
+                    </button>
+
+                </form>
+            </div>
+
+            <!-- Footer -->
+            <div class="login-footer">
+                <p>&copy; 2026 EduNexus ERP | Adani University | All Rights Reserved</p>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Help Desk</a>
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variable to store selected role
+        let selectedRole = 'student';
+
+        // Role Selection Logic
+        function selectRole(element) {
+            // Remove active class from all cards
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.classList.remove('active');
+            });
+
+            // Add active class to clicked card
+            element.classList.add('active');
+
+            // Update selected role variable
+            selectedRole = element.getAttribute('data-role');
+        }
+    </script>
+</body>
+
+</html>

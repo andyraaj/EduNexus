@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - EduNexus ERP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand"><span>🎓</span> <span class="brand-text">EduNexus</span></div>
+        <div class="user-profile">
+            <div class="user-avatar user-avatar-display">S</div>
+            <div class="user-info">
+                <span class="user-name user-name-display">Student Name</span>
+                <span class="user-role user-role-display">Student</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-group-title">Main</li>
+            <li class="nav-item"><a href="student-dashboard.html" class="nav-link"><span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span></a></li>
+            <li class="nav-group-title">Academics</li>
+            <li class="nav-item"><a href="attendance.html" class="nav-link"><span class="nav-icon">✅</span> <span
+                        class="nav-text">Attendance</span></a></li>
+            <li class="nav-item"><a href="timetable.html" class="nav-link"><span class="nav-icon">📅</span> <span
+                        class="nav-text">Timetable</span></a></li>
+            <li class="nav-item"><a href="results.html" class="nav-link active"><span class="nav-icon">🏆</span> <span
+                        class="nav-text">Results</span></a></li>
+            <li class="nav-group-title">Finance</li>
+            <li class="nav-item"><a href="billing.html" class="nav-link"><span class="nav-icon">💳</span> <span
+                        class="nav-text">Billing</span></a></li>
+            <li class="nav-group-title">Learning</li>
+            <li class="nav-item"><a href="quiz.html" class="nav-link"><span class="nav-icon">✍️</span> <span
+                        class="nav-text">Quizzes</span></a></li>
+            <li class="nav-item"><a href="announcements.html" class="nav-link"><span class="nav-icon">📢</span> <span
+                        class="nav-text">Announcements</span></a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <button id="sidebarToggle" class="toggle-btn">☰</button>
+            <div class="page-title">Examination Results</div>
+            <div class="header-actions">
+                <button onclick="logout()" class="btn-primary" style="background-color: var(--danger);">Logout</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="tab-container">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="sem">Semester Results</button>
+                    <button class="tab-btn" data-tab="cgpa">CGPA & Transcripts</button>
+                    <button class="tab-btn" data-tab="downloads">Downloads</button>
+                </div>
+
+                <!-- Tab 1: Semester -->
+                <div id="sem" class="tab-content active">
+                    <!-- RESULT CARD -->
+                    <div class="result-card">
+                        <div class="result-header">
+                            <div>
+                                <h3 style="margin-bottom: 0.25rem;">Semester 6 Result</h3>
+                                <p style="color: var(--text-muted); font-size: 0.9rem;">Bachelor of Technology</p>
+                            </div>
+                            <div class="grade-circle" id="sgpa-circle">
+                                <span id="sgpa-value">--</span>
+                                <span style="font-size: 0.8rem; font-weight: normal;">SGPA</span>
+                            </div>
+                        </div>
+
+                        <table class="result-table">
+                            <thead>
+                                <tr>
+                                    <th>Subject Code</th>
+                                    <th>Subject Name</th>
+                                    <th>Credits</th>
+                                    <th>Grade</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="results-body">
+                                <!-- Dynamic Content -->
+                                <tr>
+                                    <td colspan="5" style="text-align:center;">Loading result...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="result-footer">
+                            <button class="btn-primary" onclick="downloadMarksheet(6)">Download Marksheet</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: CGPA -->
+                <div id="cgpa" class="tab-content">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Current CGPA</div>
+                            <div class="stat-value">8.4</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Total Credits Earned</div>
+                            <div class="stat-value">120</div>
+                        </div>
+                    </div>
+
+                    <h4 style="margin-top: 2rem; margin-bottom: 1rem;">Semester Wise Progress</h4>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Semester</th>
+                                <th>Credits Registered</th>
+                                <th>Credits Earned</th>
+                                <th>SGPA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sem I</td>
+                                <td>24</td>
+                                <td>24</td>
+                                <td>8.2</td>
+                            </tr>
+                            <tr>
+                                <td>Sem II</td>
+                                <td>24</td>
+                                <td>24</td>
+                                <td>8.5</td>
+                            </tr>
+                            <tr>
+                                <td>Sem III</td>
+                                <td>22</td>
+                                <td>22</td>
+                                <td>8.1</td>
+                            </tr>
+                            <tr>
+                                <td>Sem IV</td>
+                                <td>24</td>
+                                <td>24</td>
+                                <td>8.4</td>
+                            </tr>
+                            <tr>
+                                <td>Sem V</td>
+                                <td>26</td>
+                                <td>26</td>
+                                <td>8.8</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tab 3: Downloads -->
+                <div id="downloads" class="tab-content">
+                    <h3>Document Center</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 2rem;">Download official digital copies of your
+                        marksheets.</p>
+
+                    <div
+                        style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+                        <div class="card" style="margin:0; text-align: center;">
+                            <span style="font-size: 2rem;">📄</span>
+                            <h4>Sem 6 Marksheet</h4>
+                            <button class="btn-primary" style="width: 100%; margin-top: 1rem;" onclick="downloadMarksheet(6)">Download PDF</button>
+                        </div>
+                        <div class="card" style="margin:0; text-align: center;">
+                            <span style="font-size: 2rem;">📄</span>
+                            <h4>Sem 5 Marksheet</h4>
+                            <button class="btn-primary" style="width: 100%; margin-top: 1rem;" onclick="downloadMarksheet(5)">Download PDF</button>
+                        </div>
+                        <div class="card" style="margin:0; text-align: center;">
+                            <span style="font-size: 2rem;">📜</span>
+                            <h4>Provisional Cert</h4>
+                            <button class="btn-primary"
+                                style="width: 100%; margin-top: 1rem; opacity: 0.6; cursor: not-allowed;" disabled>Not
+                                Available</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

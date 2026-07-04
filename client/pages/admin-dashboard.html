@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduNexus - Admin Dashboard</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-grid">
+        <aside class="sidebar">
+            <div class="brand mb-4">
+                <span class="text-xl">EduNexus</span>
+            </div>
+
+            <div class="profile-mini mb-4"
+                style="padding: 1rem; background: #F3F4F6; border-radius: 0.5rem; margin-bottom: 2rem;">
+                <p class="font-bold" id="userName">Administrator</p>
+                <p class="text-sm text-muted">System Admin</p>
+            </div>
+
+            <nav>
+                <a href="#" class="nav-link active" data-tab="dashboard">Dashboard</a>
+                <a href="#" class="nav-link" data-tab="users">User Management</a>
+                <a href="#" class="nav-link" data-tab="config">Configuration</a>
+                <a href="#" class="nav-link" data-tab="logs">System Logs</a>
+            </nav>
+
+            <div style="margin-top: auto; padding-top: 2rem;">
+                <button onclick="logout()" class="nav-link text-red"
+                    style="width: 100%; text-align: left; border: none; background: none; cursor: pointer;">
+                    Logout
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="flex justify-between items-center mb-4" style="margin-bottom: 2rem;">
+                <h2 class="text-2xl" id="pageTitle">Admin Overview</h2>
+                <div class="date text-muted">Mon, 20 Jan 2026</div>
+            </header>
+
+            <!-- Dashboard View -->
+            <div id="dashboard" class="tab-content active">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="card">
+                        <h3 class="text-sm text-muted mb-2">Total Students</h3>
+                        <span class="text-2xl">1,204</span>
+                    </div>
+                    <div class="card">
+                        <h3 class="text-sm text-muted mb-2">Total Faculty</h3>
+                        <span class="text-2xl">56</span>
+                    </div>
+                    <div class="card">
+                        <h3 class="text-sm text-muted mb-2">System Status</h3>
+                        <span class="text-2xl" style="color: var(--success);">Healthy</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users View -->
+            <div id="users" class="tab-content">
+                <div class="card">
+                    <h3 class="text-lg mb-4">All Users</h3>
+                    <div id="userList">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Configuration -->
+            <div id="config" class="tab-content">
+                <div class="card">
+                    <h3 class="text-lg mb-4">Global Settings</h3>
+                    <div class="input-group">
+                        <label>Current Semester</label>
+                        <select>
+                            <option>Spring 2026</option>
+                            <option>Fall 2026</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" onclick="alert('Configuration Saved')">Save Changes</button>
+                </div>
+            </div>
+
+            <!-- Logs -->
+            <div id="logs" class="tab-content">
+                <div class="card">
+                    <h3 class="text-lg mb-4">Activity Logs</h3>
+                    <p class="text-muted">No recent critical errors.</p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+    <script src="../js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = checkAuth();
+            if (user) document.getElementById('userName').textContent = user.name;
+
+            const tabs = document.querySelectorAll('.nav-link[data-tab]');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    e.target.classList.add('active');
+                    const targetId = e.target.getAttribute('data-tab');
+                    document.getElementById(targetId).classList.add('active');
+                    document.getElementById('pageTitle').textContent = e.target.textContent;
+
+                    if (targetId === 'users') loadUsers();
+                });
+            });
+        });
+
+        async function loadUsers() {
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch('http://localhost:5000/api/users', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const users = await res.json();
+                let html = '<table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Action</th></tr></thead><tbody>';
+                users.forEach(u => {
+                    html += `<tr><td>${u.name}</td><td>${u.email}</td><td>${u.role}</td><td><button class="text-red btn" style="padding:0.25rem 0.5rem; font-size: 0.8rem; border:1px solid red">Remove</button></td></tr>`;
+                });
+                html += '</tbody></table>';
+                document.getElementById('userList').innerHTML = html;
+            } catch (e) { console.error(e); }
+        }
+    </script>
+</body>
+
+</html>

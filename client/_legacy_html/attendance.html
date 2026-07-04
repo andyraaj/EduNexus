@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance - EduNexus ERP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <span>🎓</span> <span class="brand-text">EduNexus</span>
+        </div>
+        <div class="user-profile">
+            <div class="user-avatar user-avatar-display">S</div>
+            <div class="user-info">
+                <span class="user-name user-name-display">Student Name</span>
+                <span class="user-role user-role-display">Student</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-group-title">Main</li>
+            <li class="nav-item"><a href="student-dashboard.html" class="nav-link"><span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span></a></li>
+            <li class="nav-group-title">Academics</li>
+            <li class="nav-item"><a href="attendance.html" class="nav-link active"><span class="nav-icon">✅</span> <span
+                        class="nav-text">Attendance</span></a></li>
+            <li class="nav-item"><a href="timetable.html" class="nav-link"><span class="nav-icon">📅</span> <span
+                        class="nav-text">Timetable</span></a></li>
+            <li class="nav-item"><a href="results.html" class="nav-link"><span class="nav-icon">🏆</span> <span
+                        class="nav-text">Results</span></a></li>
+            <li class="nav-group-title">Finance</li>
+            <li class="nav-item"><a href="billing.html" class="nav-link"><span class="nav-icon">💳</span> <span
+                        class="nav-text">Billing</span></a></li>
+            <li class="nav-group-title">Learning</li>
+            <li class="nav-item"><a href="quiz.html" class="nav-link"><span class="nav-icon">✍️</span> <span
+                        class="nav-text">Quizzes</span></a></li>
+            <li class="nav-item"><a href="announcements.html" class="nav-link"><span class="nav-icon">📢</span> <span
+                        class="nav-text">Announcements</span></a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <button id="sidebarToggle" class="toggle-btn">☰</button>
+            <div class="page-title">Attendance Management</div>
+            <div class="header-actions">
+                <button onclick="logout()" class="btn-primary" style="background-color: var(--danger);">Logout</button>
+            </div>
+        </header>
+
+        <div class="container">
+
+            <!-- TABS SYSTEM -->
+            <div class="tab-container">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="overall">Overall Status</button>
+                    <button class="tab-btn" data-tab="subject">Subject Wise</button>
+                    <button class="tab-btn" data-tab="monthly">Monthly Log</button>
+                    <button class="tab-btn" data-tab="analytics">Analytics</button>
+                </div>
+
+                <!-- Tab 1: Overall -->
+                <div id="overall" class="tab-content active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Total Classes</div>
+                            <div class="stat-value" id="stat-total-days">--</div>
+                        </div>
+                        <div class="stat-card" style="border-left-color: var(--success);">
+                            <div class="stat-label">Present</div>
+                            <div class="stat-value" style="color: var(--success);" id="stat-present">--</div>
+                        </div>
+                        <div class="stat-card" style="border-left-color: var(--danger);">
+                            <div class="stat-label">Absent</div>
+                            <div class="stat-value" style="color: var(--danger);" id="stat-absent">--</div>
+                        </div>
+                        <div class="stat-card" style="border-left-color: var(--info);">
+                            <div class="stat-label">Overall Attendance</div>
+                            <div class="stat-value" style="color: var(--info);" id="stat-percentage">--%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Subject Wise -->
+                <div id="subject" class="tab-content">
+                    <h3 style="margin-bottom: 1rem;">Subject-wise Attendance Breakdown</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Subject Code</th>
+                                <th>Subject Name</th>
+                                <th>Total Classes</th>
+                                <th>Attended</th>
+                                <th>Percentage</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subject-att-body">
+                            <tr><td colspan="6" style="text-align:center;color:var(--text-muted)">Loading subject data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tab 3: Monthly -->
+                <div id="monthly" class="tab-content">
+                    <h3 style="margin-bottom: 1rem;">Monthly Records</h3>
+                    <!-- Filters -->
+                    <div class="filters-container"
+                        style="background: white; padding: 1rem; border-radius: var(--radius); margin-bottom: 1.5rem; display: flex; gap: 1rem; align-items: center; box-shadow: var(--shadow-sm);">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="att-month" style="margin-right: 0.5rem;">Month:</label>
+                            <select id="att-month" class="form-control" style="width: auto; display: inline-block;">
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="att-year" style="margin-right: 0.5rem;">Year:</label>
+                            <select id="att-year" class="form-control" style="width: auto; display: inline-block;">
+                                <option value="2026">2026</option>
+                                <option value="2025">2025</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary" onclick="loadAttendance()">Filter</button>
+                    </div>
+
+                    <div class="card">
+                        <h3>Monthly Records</h3>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Subject</th>
+                                        <th>Status</th>
+                                        <th>Faculty</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="attendance-body">
+                                    <!-- Dynamic Content -->
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">Select month and year to view
+                                            records</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Analytics -->
+                <div id="analytics" class="tab-content">
+                    <div class="card">
+                        <h3 style="margin-bottom:1rem">Attendance Trend</h3>
+                        <canvas id="attendance-chart" height="100"></canvas>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Draw attendance chart when analytics tab clicked
+        document.querySelector('[data-tab="analytics"]').addEventListener('click', async () => {
+            const session = getSession();
+            if (!session) return;
+            const res = await fetch('/api/attendance/subject-summary', { headers: { 'Authorization': `Bearer ${session.token}` } });
+            if (!res.ok) return;
+            const data = await res.json();
+            const ctx = document.getElementById('attendance-chart');
+            if (!ctx) return;
+            if (window._attChart) window._attChart.destroy();
+            window._attChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.map(d => d.subject.name),
+                    datasets: [
+                        { label: 'Present', data: data.map(d => d.present), backgroundColor: 'rgba(16,185,129,0.7)' },
+                        { label: 'Absent', data: data.map(d => d.absent), backgroundColor: 'rgba(239,68,68,0.7)' }
+                    ]
+                },
+                options: { responsive: true, plugins: { legend: { position: 'top' } } }
+            });
+        });
+    </script>
+</body>
+
+</html>

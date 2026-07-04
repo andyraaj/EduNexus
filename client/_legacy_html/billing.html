@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing - EduNexus ERP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand"><span>🎓</span> <span class="brand-text">EduNexus</span></div>
+        <div class="user-profile">
+            <div class="user-avatar user-avatar-display">S</div>
+            <div class="user-info">
+                <span class="user-name user-name-display">Student Name</span>
+                <span class="user-role user-role-display">Student</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-group-title">Main</li>
+            <li class="nav-item"><a href="student-dashboard.html" class="nav-link"><span class="nav-icon">📊</span> <span class="nav-text">Dashboard</span></a></li>
+            <li class="nav-group-title">Academics</li>
+            <li class="nav-item"><a href="attendance.html" class="nav-link"><span class="nav-icon">✅</span> <span class="nav-text">Attendance</span></a></li>
+            <li class="nav-item"><a href="timetable.html" class="nav-link"><span class="nav-icon">📅</span> <span class="nav-text">Timetable</span></a></li>
+            <li class="nav-item"><a href="results.html" class="nav-link"><span class="nav-icon">🏆</span> <span class="nav-text">Results</span></a></li>
+            <li class="nav-group-title">Finance</li>
+            <li class="nav-item"><a href="billing.html" class="nav-link active"><span class="nav-icon">💳</span> <span class="nav-text">Billing</span></a></li>
+            <li class="nav-group-title">Learning</li>
+            <li class="nav-item"><a href="quiz.html" class="nav-link"><span class="nav-icon">✍️</span> <span class="nav-text">Quizzes</span></a></li>
+            <li class="nav-item"><a href="announcements.html" class="nav-link"><span class="nav-icon">📢</span> <span class="nav-text">Announcements</span></a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <button id="sidebarToggle" class="toggle-btn">☰</button>
+            <div class="page-title">Student Billing</div>
+            <div class="header-actions">
+                <button onclick="logout()" class="btn-primary" style="background-color: var(--danger)">Logout</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <!-- Summary Stats -->
+            <div class="stats-grid" style="margin-bottom:1.5rem">
+                <div class="stat-card">
+                    <div class="stat-label">Total Billed</div>
+                    <div class="stat-value" id="total-billed">--</div>
+                </div>
+                <div class="stat-card" style="border-left-color: var(--danger)">
+                    <div class="stat-label">Pending Due</div>
+                    <div class="stat-value" style="color: var(--danger)" id="total-pending">--</div>
+                </div>
+            </div>
+
+            <div class="tab-container">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="all">All Invoices</button>
+                    <button class="tab-btn" data-tab="unpaid">Unpaid / Due</button>
+                    <button class="tab-btn" data-tab="paid">Payment History</button>
+                </div>
+
+                <!-- Tab 1: All Invoices -->
+                <div id="all" class="tab-content active">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Invoice #</th>
+                                    <th>Description</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="billing-body">
+                                <tr><td colspan="6" style="text-align:center">Loading invoices...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Unpaid / Due -->
+                <div id="unpaid" class="tab-content">
+                    <h3 style="margin-bottom:1rem;color:var(--danger)">Outstanding Dues</h3>
+                    <p style="color:var(--text-muted);margin-bottom:1.5rem">Please clear your dues before the exam registration deadline.</p>
+                    <div id="unpaid-list">
+                        <p style="color:var(--text-muted)">Loading unpaid invoices...</p>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Payment History -->
+                <div id="paid" class="tab-content">
+                    <h3 style="margin-bottom:1rem">Payment History</h3>
+                    <div id="paid-list">
+                        <p style="color:var(--text-muted)">Loading payment history...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Extra tab logic to show unpaid/paid filtered views
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadBilling();
+            // After billing loads populate the sub-tabs from the same data
+            setTimeout(async () => {
+                const session = getSession();
+                if (!session) return;
+                const res = await fetch('/api/billing/my', { headers: { 'Authorization': `Bearer ${session.token}` } });
+                if (!res.ok) return;
+                const invoices = await res.json();
+
+                // Unpaid tab
+                const unpaidList = document.getElementById('unpaid-list');
+                const unpaid = invoices.filter(i => i.status !== 'Paid');
+                if (unpaid.length === 0) {
+                    unpaidList.innerHTML = '<p style="color:var(--success);font-weight:600">✅ No pending dues! All payments are up to date.</p>';
+                } else {
+                    unpaidList.innerHTML = unpaid.map(i => `
+                        <div class="card" style="border-left:5px solid var(--danger);margin-bottom:1rem">
+                            <div style="display:flex;justify-content:space-between;align-items:center">
+                                <div>
+                                    <h4>${i.title}</h4>
+                                    <p style="color:var(--text-muted)">Due: ${new Date(i.dueDate).toLocaleDateString('en-GB')} • <span style="color:var(--danger)">${i.status}</span></p>
+                                </div>
+                                <div style="text-align:right">
+                                    <div style="font-size:1.5rem;font-weight:700">₹${i.amount.toLocaleString('en-IN')}</div>
+                                    <button class="btn-primary" style="margin-top:0.5rem" onclick="payInvoice('${i._id}')">Pay Now</button>
+                                </div>
+                            </div>
+                        </div>`).join('');
+                }
+
+                // Paid tab
+                const paidList = document.getElementById('paid-list');
+                const paid = invoices.filter(i => i.status === 'Paid');
+                if (paid.length === 0) {
+                    paidList.innerHTML = '<p style="color:var(--text-muted)">No payment history available.</p>';
+                } else {
+                    paidList.innerHTML = `<table class="table"><thead><tr><th>Description</th><th>Amount</th><th>Paid On</th></tr></thead><tbody>
+                        ${paid.map(i => `<tr>
+                            <td>${i.title}</td>
+                            <td>₹${i.amount.toLocaleString('en-IN')}</td>
+                            <td>${i.paidAt ? new Date(i.paidAt).toLocaleDateString('en-GB') : '-'}</td>
+                        </tr>`).join('')}
+                    </tbody></table>`;
+                }
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

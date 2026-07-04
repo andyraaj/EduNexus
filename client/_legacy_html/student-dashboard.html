@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - EduNexus ERP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">
+            <span>🎓</span> <span class="brand-text">EduNexus</span>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar user-avatar-display">S</div>
+            <div class="user-info">
+                <span class="user-name user-name-display">Student Name</span>
+                <span class="user-role user-role-display">Student</span>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <li class="nav-group-title">Main</li>
+            <li class="nav-item">
+                <a href="student-dashboard.html" class="nav-link active">
+                    <span class="nav-icon">📊</span> <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
+
+            <li class="nav-group-title">Academics</li>
+            <li class="nav-item">
+                <a href="attendance.html" class="nav-link">
+                    <span class="nav-icon">✅</span> <span class="nav-text">Attendance</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="timetable.html" class="nav-link">
+                    <span class="nav-icon">📅</span> <span class="nav-text">Timetable</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="results.html" class="nav-link">
+                    <span class="nav-icon">🏆</span> <span class="nav-text">Results</span>
+                </a>
+            </li>
+
+            <li class="nav-group-title">Finance</li>
+            <li class="nav-item">
+                <a href="billing.html" class="nav-link">
+                    <span class="nav-icon">💳</span> <span class="nav-text">Billing</span>
+                </a>
+            </li>
+
+            <li class="nav-group-title">Learning</li>
+            <li class="nav-item">
+                <a href="quiz.html" class="nav-link">
+                    <span class="nav-icon">✍️</span> <span class="nav-text">Quizzes</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="announcements.html" class="nav-link">
+                    <span class="nav-icon">📢</span> <span class="nav-text">Announcements</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="top-header">
+            <button id="sidebarToggle" class="toggle-btn">☰</button>
+            <div class="page-title">Dashboard</div>
+            <div class="header-actions">
+                <button onclick="logout()" class="btn-primary" style="background-color: var(--danger);">Logout</button>
+            </div>
+        </header>
+
+        <!-- Container -->
+        <div class="container">
+            <!-- Welcome Banner -->
+            <div style="margin-bottom: 2rem;">
+                <h2 style="font-size: 1.5rem; color: var(--primary);">Welcome back, <span
+                        class="user-name-display">Student</span>! 👋</h2>
+                <p style="color: var(--text-muted);">Here is what's happening with your academic progress.</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Average CGPA</div>
+                    <div class="stat-value" id="dashboard-cgpa">--</div>
+                </div>
+                <div class="stat-card" style="border-left-color: var(--success);">
+                    <div class="stat-label">Attendance</div>
+                    <div class="stat-value" style="color: var(--success);" id="dashboard-attendance">--%</div>
+                </div>
+                <div class="stat-card" style="border-left-color: var(--warning);">
+                    <div class="stat-label">Pending Invoices</div>
+                    <div class="stat-value" style="color: var(--warning);" id="dashboard-invoices">--</div>
+                </div>
+                <div class="stat-card" style="border-left-color: var(--info);">
+                    <div class="stat-label">Next Quiz</div>
+                    <div class="stat-value" style="font-size: 1.25rem;" id="dashboard-quiz">--</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">Check Quizzes</div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <h3 style="margin-bottom: 1rem; color: var(--primary-light);">Quick Actions</h3>
+            <div class="stats-grid">
+                <!-- Action 1 -->
+                <div class="card" style="margin:0; text-align: center; cursor: pointer;"
+                    onclick="window.location.href='timetable.html'">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📅</div>
+                    <h4>View Timetable</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Check your daily schedule</p>
+                </div>
+
+                <!-- Action 2 -->
+                <div class="card" style="margin:0; text-align: center; cursor: pointer;"
+                    onclick="window.location.href='results.html'">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">📝</div>
+                    <h4>Exam Results</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Download semester marksheet</p>
+                </div>
+
+                <!-- Action 3 -->
+                <div class="card" style="margin:0; text-align: center; cursor: pointer;"
+                    onclick="window.location.href='billing.html'">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">💳</div>
+                    <h4>Pay Fees</h4>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Clear outstanding dues</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

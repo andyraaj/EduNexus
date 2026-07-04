@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Grades - Faculty Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="brand"><span>🎓</span> <span class="brand-text">EduNexus</span></div>
+        <div class="user-profile">
+            <div class="user-avatar user-avatar-display">F</div>
+            <div class="user-info">
+                <span class="user-name user-name-display">Faculty Name</span>
+                <span class="user-role user-role-display">Faculty</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-group-title">Main</li>
+            <li class="nav-item"><a href="faculty-dashboard.html" class="nav-link"><span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span></a></li>
+            <li class="nav-group-title">Management</li>
+            <li class="nav-item"><a href="faculty-attendance.html" class="nav-link"><span class="nav-icon">✅</span>
+                    <span class="nav-text">Attendance</span></a></li>
+            <li class="nav-item"><a href="faculty-results.html" class="nav-link active"><span class="nav-icon">📝</span>
+                    <span class="nav-text">Grading</span></a></li>
+            <li class="nav-item"><a href="faculty-quizzes.html" class="nav-link"><span class="nav-icon">✍️</span> <span
+                        class="nav-text">Quizzes</span></a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <button id="sidebarToggle" class="toggle-btn">☰</button>
+            <div class="page-title">Grade Results</div>
+            <div class="header-actions">
+                <button onclick="logout()" class="btn-primary" style="background-color: var(--danger);">Logout</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="card">
+                <h3>Select Assessment</h3>
+                <div class="filters-container" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                    <select id="grade-subject" class="form-control">
+                        <option value="">Select Subject</option>
+                    </select>
+                    <select id="grade-exam-type" class="form-control">
+                        <option value="Internal 1">Internal 1</option>
+                        <option value="Mid-Sem">Mid-Sem</option>
+                        <option value="End-Sem">End-Sem</option>
+                    </select>
+                    <button class="btn-primary" onclick="loadStudentListForGrading()">Load Students</button>
+                </div>
+            </div>
+
+            <div class="card" id="grading-list-container" style="display: none;">
+                <h3>Enter Marks</h3>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Roll No</th>
+                                <th>Name</th>
+                                <th>Marks Obtained</th>
+                                <th>Max Marks</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="grading-list-body">
+                            <!-- Rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

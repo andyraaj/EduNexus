@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Quizzes - Faculty Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="brand"><span>🎓</span> <span class="brand-text">EduNexus</span></div>
+        <div class="user-profile">
+            <div class="user-avatar user-avatar-display">F</div>
+            <div class="user-info">
+                <span class="user-name user-name-display">Faculty Name</span>
+                <span class="user-role user-role-display">Faculty</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-group-title">Main</li>
+            <li class="nav-item"><a href="faculty-dashboard.html" class="nav-link"><span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span></a></li>
+            <li class="nav-group-title">Management</li>
+            <li class="nav-item"><a href="faculty-attendance.html" class="nav-link"><span class="nav-icon">✅</span>
+                    <span class="nav-text">Attendance</span></a></li>
+            <li class="nav-item"><a href="faculty-results.html" class="nav-link"><span class="nav-icon">📝</span> <span
+                        class="nav-text">Grading</span></a></li>
+            <li class="nav-item"><a href="faculty-quizzes.html" class="nav-link active"><span class="nav-icon">✍️</span>
+                    <span class="nav-text">Quizzes</span></a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <button id="sidebarToggle" class="toggle-btn">☰</button>
+            <div class="page-title">Quiz Manager</div>
+            <div class="header-actions">
+                <button onclick="logout()" class="btn-primary" style="background-color: var(--danger);">Logout</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="card">
+                <h3>Create New Quiz</h3>
+                <form id="create-quiz-form" onsubmit="handleCreateQuiz(event)">
+                    <div class="form-group">
+                        <label>Quiz Title</label>
+                        <input type="text" id="quiz-title" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="quiz-desc" class="form-control">
+                    </div>
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <label>Subject</label>
+                            <select id="quiz-subject" class="form-control" required>
+                                <option value="">Select Subject</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Time Limit (Minutes)</label>
+                            <input type="number" id="quiz-time" class="form-control" value="30" required>
+                        </div>
+                    </div>
+
+                    <div id="questions-container">
+                        <h4>Questions</h4>
+                        <div class="question-item"
+                            style="border: 1px solid #ddd; padding: 1rem; margin-bottom: 1rem; border-radius: 8px;">
+                            <div class="form-group">
+                                <label>Question 1</label>
+                                <input type="text" class="form-control q-text" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Options (Comma separated)</label>
+                                <input type="text" class="form-control q-options"
+                                    placeholder="Option A, Option B, Option C, Option D" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Correct Option Index (0-3)</label>
+                                <input type="number" class="form-control q-correct" min="0" max="3" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-primary"
+                        style="background-color: var(--secondary); margin-right: 1rem;" onclick="addQuestionField()">+
+                        Add Question</button>
+                    <button type="submit" class="btn-primary">Create Quiz</button>
+                </form>
+            </div>
+        </div>
+    </main>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

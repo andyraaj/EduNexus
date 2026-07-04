@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements - EduNexus ERP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand"><span>🎓</span> <span class="brand-text">EduNexus</span></div>
+        <div class="user-profile">
+            <div class="user-avatar user-avatar-display">S</div>
+            <div class="user-info">
+                <span class="user-name user-name-display">Student Name</span>
+                <span class="user-role user-role-display">Student</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-group-title">Main</li>
+            <li class="nav-item"><a href="student-dashboard.html" class="nav-link"><span class="nav-icon">📊</span> <span class="nav-text">Dashboard</span></a></li>
+            <li class="nav-group-title">Academics</li>
+            <li class="nav-item"><a href="attendance.html" class="nav-link"><span class="nav-icon">✅</span> <span class="nav-text">Attendance</span></a></li>
+            <li class="nav-item"><a href="timetable.html" class="nav-link"><span class="nav-icon">📅</span> <span class="nav-text">Timetable</span></a></li>
+            <li class="nav-item"><a href="results.html" class="nav-link"><span class="nav-icon">🏆</span> <span class="nav-text">Results</span></a></li>
+            <li class="nav-group-title">Finance</li>
+            <li class="nav-item"><a href="billing.html" class="nav-link"><span class="nav-icon">💳</span> <span class="nav-text">Billing</span></a></li>
+            <li class="nav-group-title">Learning</li>
+            <li class="nav-item"><a href="quiz.html" class="nav-link"><span class="nav-icon">✍️</span> <span class="nav-text">Quizzes</span></a></li>
+            <li class="nav-item"><a href="announcements.html" class="nav-link active"><span class="nav-icon">📢</span> <span class="nav-text">Announcements</span></a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <button id="sidebarToggle" class="toggle-btn">☰</button>
+            <div class="page-title">📢 Digital Notice Board</div>
+            <div class="header-actions">
+                <button onclick="logout()" class="btn-primary" style="background-color:var(--danger)">Logout</button>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="tab-container">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="all" onclick="loadAnnouncements('all')">All Notices</button>
+                    <button class="tab-btn" data-tab="academic" onclick="loadAnnouncements('Academic')">Academic</button>
+                    <button class="tab-btn" data-tab="urgent" onclick="loadAnnouncements('Urgent')">⚠ Urgent</button>
+                    <button class="tab-btn" data-tab="events" onclick="loadAnnouncements('Event')">Events</button>
+                    <button class="tab-btn" data-tab="general" onclick="loadAnnouncements('General')">General</button>
+                </div>
+
+                <div id="all" class="tab-content active">
+                    <div id="notices-list">
+                        <p style="color:var(--text-muted)">Loading announcements...</p>
+                    </div>
+                </div>
+                <div id="academic" class="tab-content">
+                    <div id="notices-list-academic"></div>
+                </div>
+                <div id="urgent" class="tab-content">
+                    <div id="notices-list-urgent"></div>
+                </div>
+                <div id="events" class="tab-content">
+                    <div id="notices-list-events"></div>
+                </div>
+                <div id="general" class="tab-content">
+                    <div id="notices-list-general"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Override tab buttons to load filtered notices into the right container
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAnnouncements('all');
+        });
+
+        // Remap loadAnnouncements to handle sub-tabs too
+        const origLoad = window.loadAnnouncements || loadAnnouncements;
+        async function loadAnnouncementsForTab(category, containerId) {
+            const session = getSession();
+            if (!session) return;
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '<p style="color:var(--text-muted)">Loading...</p>';
+            const url = category === 'all' ? '/api/announcements' : `/api/announcements?category=${category}`;
+            try {
+                const res = await fetch(url, { headers: { 'Authorization': `Bearer ${session.token}` } });
+                const notices = await res.json();
+                if (!res.ok || notices.length === 0) {
+                    container.innerHTML = '<p style="color:var(--text-muted)">No announcements in this category.</p>'; return;
+                }
+                const colors = { Urgent: 'var(--danger)', Academic: 'var(--primary)', Event: 'var(--info)', General: 'var(--warning)' };
+                const badges = { Urgent: 'badge-danger', Academic: 'badge-info', Event: 'badge-success', General: 'badge-warning' };
+                container.innerHTML = notices.map(n => {
+                    const color = colors[n.category] || 'var(--primary)';
+                    const date = new Date(n.createdAt).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+                    const poster = n.postedBy ? n.postedBy.name : 'Admin';
+                    return `<div class="card" style="border-left:5px solid ${color};margin-bottom:1rem">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:0.5rem;align-items:flex-start">
+                            <h4 style="color:${color};margin:0">${n.title}</h4>
+                            <span style="font-size:0.8rem;color:var(--text-muted);white-space:nowrap;margin-left:1rem">${date}</span>
+                        </div>
+                        <p style="font-size:0.95rem;line-height:1.6">${n.content}</p>
+                        <div style="margin-top:0.75rem">
+                            <span class="badge ${badges[n.category] || 'badge-info'}">${n.category}</span>
+                            <span style="font-size:0.8rem;color:var(--text-muted);margin-left:0.5rem">Posted by ${poster}</span>
+                        </div>
+                    </div>`;
+                }).join('');
+            } catch (err) {
+                container.innerHTML = '<p style="color:red">Error loading announcements.</p>';
+            }
+        }
+
+        // Override tab click handlers for announcements
+        document.querySelectorAll('.tab-btn[onclick]').forEach(btn => {
+            const originalOnclick = btn.getAttribute('onclick');
+            btn.removeAttribute('onclick');
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+                const containerMap = { all: 'notices-list', academic: 'notices-list-academic', urgent: 'notices-list-urgent', events: 'notices-list-events', general: 'notices-list-general' };
+                const categoryMap = { all: 'all', academic: 'Academic', urgent: 'Urgent', events: 'Event', general: 'General' };
+                loadAnnouncementsForTab(categoryMap[tabId], containerMap[tabId]);
+            });
+        });
+    </script>
+</body>
+
+</html>
