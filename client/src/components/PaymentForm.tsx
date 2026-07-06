@@ -41,7 +41,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ invoice, onSubmit, onCancel }
                 
                 <form onSubmit={handleSubmit} style={{ marginTop: 24 }}>
                     <div style={styles.field}>
-                        <label style={styles.label}>Amount to Pay ($)</label>
+                        <label style={styles.label}>Amount to Pay (₹)</label>
                         <input 
                             type="number" 
                             step="0.01" 
@@ -52,7 +52,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ invoice, onSubmit, onCancel }
                             style={styles.input}
                             required
                         />
-                        <p style={{ fontSize: 12, color: 'var(--text-muted)', margin: '4px 0 0' }}>Max available: ${remaining.toFixed(2)}</p>
+                        <p style={{ fontSize: 12, color: 'var(--text-muted)', margin: '4px 0 0' }}>Max available: ₹{remaining.toFixed(2)}</p>
                     </div>
 
                     <div style={styles.field}>
@@ -82,7 +82,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ invoice, onSubmit, onCancel }
                     <div style={styles.actions}>
                         <button type="button" onClick={onCancel} style={styles.cancelBtn} disabled={isSubmitting}>Cancel</button>
                         <button type="submit" style={styles.submitBtn} disabled={isSubmitting}>
-                            {isSubmitting ? 'Processing...' : `Pay $${Number(amount).toFixed(2)}`}
+                            {isSubmitting ? 'Processing...' : `Pay ₹${Number(amount).toFixed(2)}`}
                         </button>
                     </div>
                 </form>

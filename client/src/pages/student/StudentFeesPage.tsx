@@ -44,8 +44,8 @@ const StudentFeesPage: React.FC = () => {
     const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
 
     const stats = [
-        { label: 'Total Pending Dues', value: `$${pendingTotal.toFixed(2)}`, color: '#ef4444', icon: '⚠' },
-        { label: 'Total Paid', value: `$${totalPaid.toFixed(2)}`, color: '#10b981', icon: '✓' },
+        { label: 'Total Pending Dues', value: `₹${pendingTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, color: '#ef4444', icon: '⚠' },
+        { label: 'Total Paid', value: `₹${totalPaid.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, color: '#10b981', icon: '✓' },
     ];
 
     if (isLoading) return <div style={{ padding: 40, textAlign: 'center' }}>Loading Fees...</div>;
