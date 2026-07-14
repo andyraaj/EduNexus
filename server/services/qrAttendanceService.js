@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+const QRCode = require('qrcode');
 const QRSession = require('../models/QRSession');
 const AttendanceRecord = require('../models/AttendanceRecord');
 const Course = require('../models/Course');
@@ -7,6 +8,29 @@ const Enrollment = require('../models/Enrollment');
 const ApiError = require('../utils/ApiError');
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
+
+/**
+ * Generate QR code as a data URL (PNG format).
+ * This is generated server-side to avoid external API dependencies in production.
+ */
+const generateQRCodeDataURL = async (token) => {
+    try {
+        const qrDataURL = await QRCode.toDataURL(token, {
+            errorCorrectionLevel: 'M',
+            type: 'image/png',
+            width: 240,
+            margin: 1,
+            color: {
+                dark: '#000000',
+                light: '#FFFFFF',
+            },
+        });
+        return qrDataURL;
+    } catch (err) {
+        console.error('[QR ATTENDANCE] Failed to generate QR code:', err.message);
+        return null;
+    }
+};
 
 /**
  * Generate a signed, tamper-evident session token.
@@ -80,6 +104,9 @@ const createQRSession = async (facultyUserId, { courseId, durationMinutes = 15, 
     const tempId = new (require('mongoose').Types.ObjectId)();
     const token = generateSessionToken(tempId, courseId, facultyUserId, expiresAt);
 
+    // 5. Generate QR code server-side
+    const qrCodeDataURL = await generateQRCodeDataURL(token);
+
     const session = await QRSession.create({
         _id: tempId,
         course: courseId,
@@ -88,6 +115,7 @@ const createQRSession = async (facultyUserId, { courseId, durationMinutes = 15, 
         topic: topic || '',
         room: room || '',
         token,
+        qrCodeDataURL,
         startedAt: now,
         expiresAt,
         lateAfterMs,
@@ -102,10 +130,12 @@ const createQRSession = async (facultyUserId, { courseId, durationMinutes = 15, 
         expiresAt: session.expiresAt,
     });
 
-    return session.populate([
+    const populated = await session.populate([
         { path: 'course', select: 'code title department' },
         { path: 'faculty', select: 'name email' },
     ]);
+    
+    return populated;
 };
 
 /**
@@ -156,7 +186,13 @@ const regenerateQRToken = async (sessionId, facultyUserId, durationMinutes = 15)
     if (session.status === 'ended') throw ApiError.badRequest('Cannot regenerate QR for an ended session.');
 
     const expiresAt = new Date(Date.now() + durationMinutes * 60 * 1000);
-    session.token = generateSessionToken(session._id, session.course, session.faculty, expiresAt);
+    const newToken = generateSessionToken(session._id, session.course, session.faculty, expiresAt);
+    
+    // Generate new QR code with the new token
+    const qrCodeDataURL = await generateQRCodeDataURL(newToken);
+    
+    session.token = newToken;
+    session.qrCodeDataURL = qrCodeDataURL;
     session.expiresAt = expiresAt;
     session.status = 'active';
     await session.save();

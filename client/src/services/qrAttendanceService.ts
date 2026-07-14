@@ -24,6 +24,7 @@ export interface QRSession {
     topic: string;
     room: string;
     token: string;
+    qrCodeDataURL?: string | null;
     startedAt: string;
     expiresAt: string;
     lateAfterMs: number;

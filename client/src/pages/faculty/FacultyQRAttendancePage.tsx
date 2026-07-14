@@ -9,9 +9,10 @@ import {
 import type { QRSession } from '@/services/qrAttendanceService';
 import type { Course } from '@/services/courseService';
 
-/* ─── tiny QR renderer using a canvas + qrcode-svg URL ─────────────────────── */
-const QRDisplay: React.FC<{ token: string; size?: number }> = ({ token, size = 240 }) => {
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(token)}&format=svg&ecc=M`;
+/* ─── tiny QR renderer using server-generated data URL ─────────────────────── */
+const QRDisplay: React.FC<{ token: string; qrCodeDataURL?: string | null; size?: number }> = ({ token, qrCodeDataURL, size = 240 }) => {
+    // Use server-generated QR code if available, fallback to external API as backup
+    const qrUrl = qrCodeDataURL || `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(token)}&format=svg&ecc=M`;
     return (
         <img src={qrUrl} width={size} height={size} alt="QR Code"
             style={{ borderRadius: 12, display: 'block' }} />
@@ -252,7 +253,7 @@ const FacultyQRAttendancePage: React.FC = () => {
                                         <div style={{ color: '#f59e0b', fontWeight: 700, marginTop: 8 }}>PAUSED</div>
                                     </div>
                                 )}
-                                <QRDisplay token={session.token} size={220} />
+                                <QRDisplay token={session.token} qrCodeDataURL={(session as any).qrCodeDataURL} size={220} />
                             </div>
                             <p style={s.qrHint}>Students scan this QR with their EduNexus portal</p>
 

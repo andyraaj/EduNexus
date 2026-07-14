@@ -40,6 +40,11 @@ const qrSessionSchema = new mongoose.Schema(
             required: true,
             unique: true,
         },
+        /** Server-generated QR code as a data URL (PNG) for display */
+        qrCodeDataURL: {
+            type: String,
+            default: null,
+        },
 
         // ── Timing ────────────────────────────────────────────────────────────
         startedAt: {
