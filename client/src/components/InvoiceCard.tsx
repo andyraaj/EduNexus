@@ -39,17 +39,17 @@ const InvoiceCard: React.FC<InvoiceCardProps> = ({ invoice, onPay, isAdminView }
                 
                 <div style={styles.amountRow}>
                     <span style={styles.label}>Total:</span>
-                    <span style={styles.value}>${invoice.amountDue.toFixed(2)}</span>
+                    <span style={styles.value}>₹{invoice.amountDue.toFixed(2)}</span>
                 </div>
                 {invoice.amountPaid > 0 && (
                     <div style={styles.amountRow}>
                         <span style={styles.label}>Paid:</span>
-                        <span style={styles.valueSuccess}>${invoice.amountPaid.toFixed(2)}</span>
+                        <span style={styles.valueSuccess}>₹{invoice.amountPaid.toFixed(2)}</span>
                     </div>
                 )}
                 <div style={{ ...styles.amountRow, borderTop: '1px solid #e5e7eb', paddingTop: 8, marginTop: 8 }}>
                     <span style={styles.labelDark}>Remaining:</span>
-                    <span style={styles.valueDanger}>${amountRemaining.toFixed(2)}</span>
+                    <span style={styles.valueDanger}>₹{amountRemaining.toFixed(2)}</span>
                 </div>
             </div>
 

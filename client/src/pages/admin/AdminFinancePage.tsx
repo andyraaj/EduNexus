@@ -60,8 +60,8 @@ const AdminFinancePage: React.FC = () => {
     const totalInvoices = invoices.length;
 
     const stats = [
-        { label: 'Total Revenue', value: `$${totalRevenue.toLocaleString()}`, color: '#10b981', icon: '💰' },
-        { label: 'Pending Dues', value: `$${pendingDues.toLocaleString()}`, color: '#ef4444', icon: '📉' },
+        { label: 'Total Revenue', value: `₹${totalRevenue.toLocaleString('en-IN')}`, color: '#10b981', icon: '💰' },
+        { label: 'Pending Dues', value: `₹${pendingDues.toLocaleString('en-IN')}`, color: '#ef4444', icon: '📉' },
         { label: 'Invoices Issued', value: totalInvoices, color: '#3b82f6', icon: '📄' },
     ];
 
@@ -94,7 +94,7 @@ const AdminFinancePage: React.FC = () => {
                             </select>
                             
                             <div style={{ display: 'flex', gap: 12 }}>
-                                <input required type="number" min="1" step="0.01" placeholder="Amount Due ($)" style={styles.input} 
+                                <input required type="number" min="1" step="0.01" placeholder="Amount Due (₹)" style={styles.input} 
                                     value={formData.amountDue} onChange={e => setFormData({ ...formData, amountDue: e.target.value })} />
                                 <input required type="date" style={styles.input} 
                                     value={formData.dueDate} onChange={e => setFormData({ ...formData, dueDate: e.target.value })} />
