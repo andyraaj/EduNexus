@@ -1,4 +1,4 @@
-const { getAllowedOrigins } = require('./config/env');
+const { getAllowedOrigins, isAllowedOrigin, getVercelProjectName } = require('./config/env');
 const Course = require('./models/Course');
 const Enrollment = require('./models/Enrollment');
 
@@ -18,9 +18,23 @@ const initSocket = (server) => {
         return null;
     }
 
+    const allowedOrigins = getAllowedOrigins();
+    console.log('[Socket.IO CORS] Allowed origins:', allowedOrigins);
+    console.log('[Socket.IO CORS] Vercel project name pattern:', getVercelProjectName());
+
     io = new Server(server, {
         cors: {
-            origin: getAllowedOrigins(),
+            origin: function (origin, callback) {
+                // Allow requests with no origin (same-origin, server-to-server)
+                if (!origin) return callback(null, true);
+
+                if (isAllowedOrigin(origin)) {
+                    return callback(null, true);
+                }
+
+                console.error('[Socket.IO CORS] Blocked origin:', origin);
+                return callback(new Error(`Origin not allowed by CORS: ${origin}`));
+            },
             methods: ['GET', 'POST'],
             credentials: true,
         },

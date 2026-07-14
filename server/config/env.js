@@ -38,23 +38,62 @@ const validateEnv = () => {
     }
 };
 
+const normalizeOrigin = (value) => {
+    if (!value) return '';
+    return String(value).trim().replace(/\/$/, '');
+};
+
+const parseOrigins = (...values) => {
+    return values
+        .flatMap((value) => String(value || '').split(','))
+        .map((value) => normalizeOrigin(value))
+        .filter(Boolean);
+};
+
 const getAllowedOrigins = () => {
-    const raw = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
-    const origins = raw.split(',').map((origin) => origin.trim()).filter(Boolean);
-    if (process.env.NODE_ENV !== 'production') {
-        // Add common dev variations
-        if (origins.includes('http://localhost:5173') && !origins.includes('http://127.0.0.1:5173')) {
-            origins.push('http://127.0.0.1:5173');
-        }
-        // Support both Vite dev ports (5173 and 5174)
-        if (!origins.includes('http://localhost:5174')) {
-            origins.push('http://localhost:5174');
-        }
-        if (!origins.includes('http://127.0.0.1:5174')) {
-            origins.push('http://127.0.0.1:5174');
-        }
-    }
+    const origins = Array.from(new Set(parseOrigins(
+        'http://localhost:5173',
+        'http://localhost:5174',
+        process.env.CLIENT_ORIGIN,
+        process.env.RENDER_EXTERNAL_URL,
+        process.env.VERCEL_FRONTEND_URL,
+        'https://EduNexus-d6jk.onrender.com'
+    )));
+
     return origins;
 };
 
-module.exports = { validateEnv, getAllowedOrigins };
+/**
+ * Get Vercel project name for dynamic preview URL matching.
+ * Extracts base name from URLs like "https://edu-nexus-client-abc123xyz-team.vercel.app"
+ */
+const getVercelProjectName = () => {
+    const url = process.env.VERCEL_FRONTEND_URL || process.env.CLIENT_ORIGIN || '';
+    const match = url.match(/https?:\/\/([^.]+)\.vercel\.app/);
+    return match ? match[1].replace(/-[a-z0-9]{8,}$/, '') : null; // strip hash suffix if present
+};
+
+/**
+ * Check if an origin should be allowed, including Vercel preview URLs.
+ */
+const isAllowedOrigin = (origin) => {
+    const normalized = normalizeOrigin(origin);
+    const allowedOrigins = getAllowedOrigins();
+
+    // 1. Exact match
+    if (allowedOrigins.includes(normalized)) return true;
+
+    // 2. Allow any Vercel preview URL for this project
+    // Vercel preview URLs look like: https://edu-nexus-client-abc123xyz-team.vercel.app
+    if (normalized.endsWith('.vercel.app')) {
+        const vercelProjectName = getVercelProjectName();
+        if (vercelProjectName) {
+            const hostname = normalized.replace(/^https?:\/\//, '');
+            if (hostname.startsWith(vercelProjectName)) return true;
+        }
+    }
+
+    return false;
+};
+
+module.exports = { validateEnv, getAllowedOrigins, isAllowedOrigin, getVercelProjectName };
